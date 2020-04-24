@@ -1,0 +1,10 @@
+{
+    "authenticationDetails": {
+        "relyingParty": "https://portal.usafricom.mil/dev/bristol",
+        "adfsUrl": "https://sts.acdde.mil"
+    },
+    "sourceDirectory": "public/build",
+    "sharePointSiteUrl": "https://portal.usafricom.mil/dev/bristol",
+    "publishingScope": "None",
+    "authenticationType": "ADFS"
+}
