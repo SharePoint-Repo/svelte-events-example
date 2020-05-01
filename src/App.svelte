@@ -1,27 +1,85 @@
 <script>
-	import 'es6-promise';
-	import 'whatwg-fetch';
-	import moment from 'moment'; 
+	import { isSameDay, format } from 'date-fns'
 	import {sp} from "@pnp/sp";
 	import {config} from './config';
 	import Logger from 'js-logger';
 	import {onMount} from 'svelte';
 	import {getData} from './getData';
+	import { createMachine, assign } from "xstate";
+  	import { useMachine } from "xstate-svelte";
+	
 	Logger.useDefaults(); 
+	
+	const today = new Date();
+	let listNames = Object.keys(config.lists); 
+	
+const simpleMachine = Machine({
+	id: 'events',
+	initial: 'idle',
+	context: {
+		data: [], 
+		config: config, 
+		tabs: config.lists, 
+	},
+	states: {
+		idle: { 
+			on: { MOUNT: 'getData' }
+		},
+		getData: { 
+			invoke: {
+				id: 'fetch',
+				src: (context, event) => getData(context.config),
+				onDone: {
+					target: 'resolve', 
+					actions: assign({
+						data: event.data
+					})
+				 },
+			}
+		},
+		resolve: {
+			entry: 'displayDefaultTab', 
+			target: 'initialized',
+
+		},
+		initialized: {
+			on: { 
+				CLICKED: { 
+					actions: assign({
+						tabs: (context, event)=>{
+							context.tabs.map(value=>{
+								let prop = Object.getOwnPropertyNames(value); 
+								prop == event.data ? value[prop] = ' activeTab' : '';
+								value; 
+							})
+						}
+					})
+				}
+			}
+		}
+	},
+	actions: {
+		displayDefaultTab: (context, event) => document.getElementById('defaultTab').click()
+	}
+});
+
+	const { state, send } = useMachine(simpleMachine);
+	let data = state.context.data;
 
     (window).global = window;
 	if (global === undefined) {
    	var global = window;
 }		
 	
-	let data = [];
 	
-	onMount(async () => {
+		/*
+		onMount(async () => {
+	
 		data =  getData(config);
 		document.getElementById('defaultTab').click();
 		
 	}); 
-
+	*/
 	
 	function displayTab(evt, listName) {
 		let i, tabcontent, tabButtons;
@@ -47,9 +105,9 @@
 
 <main>
 	<div class='tab'>
-		<button class='tabButton activeTab' on:click|preventDefault={(event)=>displayTab(event, 'allEvents')} id='defaultTab'>ALL Events</button>
+		<button class='tabButton {$state.context.tabs.allEvents}' on:click|preventDefault={(event)=>send({type:'CLICKED', data: 'allEvents'})} id='defaultTab'>ALL Events</button>
 		{#each (config.lists) as listName}
-		<button class='tabButton' on:click|preventDefault={(event)=>displayTab(event, listName)}>{listName.replace('BLDG 3317 ', '')}</button>
+		<button class='tabButton {$state.context.tabs[listName]}' on:click|preventDefault={(event)=>send({type:'CLICKED', data: listName})}>{listName.replace('BLDG 3317 ', '')}</button>
 		{/each}
 	</div>
 	<div class='tabContent' id='allEvents'>
@@ -59,9 +117,9 @@
 			
 			<ul>Today's Events
 			{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
-				{#if moment(EventDate).isSame(moment(), 'day') }
+				{#if isSameDay(EventDate, today) }
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="JocEvent"><span class="time">{moment(EventDate).format("DDMMM (HH:mm-")}</span><span class="endTime">{moment(EndDate).format("HH:mm)")} </span> <span class="title">- {Title}</span></div>
+						<div class="JocEvent"><span class="time">{format(EventDate,"DDMMM (HH:mm-")}</span><span class="endTime">{format(EndDate,"HH:mm)")} </span> <span class="title">- {Title}</span></div>
 					</a></li>
 				{/if}
 			{/each}
@@ -70,9 +128,9 @@
 			<ul>Upcoming Events
 			{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
 				
-				{#if !(moment(EventDate).isSame(moment(), 'day')) }
+				{#if !(isSameDay(EventDate, today)) }
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="JocEvent"><span class="time">{moment(EventDate).format("DDMMM (HH:mm-")}</span><span class="endTime">{moment(EndDate).format("HH:mm)")} </span> <span class="title">- {Title}</span></div>					
+						<div class="JocEvent"><span class="time">{format(EventDate, "DDMMM (HH:mm-")}</span><span class="endTime">{format(EndDate,"HH:mm)")} </span> <span class="title">- {Title}</span></div>					
 					</a></li>
 				{/if}
 			{/each}
@@ -89,9 +147,9 @@
 			
 			<ul>Today's Events
 			{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
-				{#if moment(EventDate).isSame(moment(), 'day') && list == listName}
+				{#if isSameDay(EventDate, today) && list == listName}
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="JocEvent"><span class="time">{moment(EventDate).format("DDMMM (HH:mm-")}</span><span class="endTime">{moment(EndDate).format("HH:mm)")} </span> <span class="title">- {Title}</span></div>					
+						<div class="JocEvent"><span class="time">{format(EventDate, "DDMMM (HH:mm-")}</span><span class="endTime">{format(EndDate, "HH:mm)")} </span> <span class="title">- {Title}</span></div>					
 					</a></li>
 				{/if}
 			{/each}
@@ -100,9 +158,9 @@
 			<ul>Upcoming Events
 			{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
 				
-				{#if !(moment(EventDate).isSame(moment(), 'day')) && list == listName }
+				{#if !(isSameDay(EventDate, today)) && list == listName }
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="JocEvent"><span class="time">{moment(EventDate).format("DDMMM (HH:mm-")}</span><span class="endTime">{moment(EndDate).format("HH:mm)")} </span> <span class="title">- {Title}</span></div>					
+						<div class="JocEvent"><span class="time">{format(EventDate,"DDMMM (HH:mm-")}</span><span class="endTime">{format(EndDate,"HH:mm)")} </span> <span class="title">- {Title}</span></div>					
 					</a></li>
 				{/if}
 			{/each}

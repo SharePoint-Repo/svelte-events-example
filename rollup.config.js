@@ -4,6 +4,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import injectProcessEnv from 'rollup-plugin-inject-process-env';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -17,7 +18,6 @@ export default {
 	},
 	plugins: [
 		
-		
 		svelte({
 			//customElement: true,
 			// enable run-time checks when not in production
@@ -30,6 +30,7 @@ export default {
 		}),
 		
 		
+		
 
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
@@ -40,6 +41,7 @@ export default {
 			browser: true,
 			dedupe: ['svelte']
 		}),
+		
 		commonjs(),
 		 // compile to good old IE11 compatible ES5
 		 babel(
@@ -68,6 +70,9 @@ export default {
 				]
 		  	}
 		),
+		injectProcessEnv({ 
+			NODE_ENV: production ? 'production' : 'development',
+		}),
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
 		!production && serve(),

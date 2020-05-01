@@ -1,6 +1,4 @@
-import 'es6-promise';
-import 'whatwg-fetch';
-import moment from 'moment'; 
+import isBefore from 'date-fns/isBefore'
 import {sp} from "@pnp/sp";
 import Logger from 'js-logger';
 
@@ -67,7 +65,7 @@ export let getData = async (config)=>{
         })
     }
     items.sort((a,b) => {
-        if(moment(a.EventDate).isBefore(moment(b.EventDate))){return -1}
+        if( isBefore(a.EventDate, b.EventDate)){return -1}
         return 1
     }) 
     Logger.debug(items);
