@@ -1,11 +1,11 @@
-import isBefore from 'date-fns/isBefore'
+import {isBefore, parseISO} from 'date-fns'
 import {sp} from "@pnp/sp";
 import Logger from 'js-logger';
 
 Logger.useDefaults(); 
 
-export let getData = async (config)=>{
-    Logger.debug(config)
+export const getData = async (config)=>{
+  
     sp.setup({
         sp: {
             ie11: true,
@@ -46,7 +46,8 @@ export let getData = async (config)=>{
     let items = [];
     
     for(let list of config.lists){
-        await sp.web.lists.getByTitle(list)
+        if (list.name == 'ALL EVENTS'){continue;}
+        await sp.web.lists.getByTitle(list.name)
         .renderListDataAsStream({
 
             OverrideViewXml: overrideViewXml,
@@ -54,10 +55,12 @@ export let getData = async (config)=>{
             Paging:'Paged=TRUE&RowLimit=5'
         })
         .then(response => {
-            Logger.debug(response);
+          
             let temp = response.Row.map(row => {
-                row.list = list;
-                row.linkUrl = (config.baseUrl) + "/list/" + list + "/DispForm.aspx?ID=" + (row.ID); 
+                row.list = list.name;
+                row.linkUrl = (config.baseUrl) + "/list/" + (list.name) + "/DispForm.aspx?ID=" + (row.ID);
+                row.EventDate = parseISO(row['EventDate.']); 
+                row.EndDate = parseISO(row['EndDate.'])
                 return row; 
             });
             
@@ -65,9 +68,9 @@ export let getData = async (config)=>{
         })
     }
     items.sort((a,b) => {
-        if( isBefore(a.EventDate, b.EventDate)){return -1}
+        if( isBefore(parseISO(a.EventDate), parseISO(b.EventDate))){return -1}
         return 1
     }) 
-    Logger.debug(items);
+  
     return items
 }

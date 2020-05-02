@@ -28,6 +28,7 @@
     "svelte": "^3.21.0"
   },
   "dependencies": {
+    "@kayodebristol/svelte-robot-factory": "^0.1.2",
     "@pnp/common": "^1.3.11",
     "@pnp/logging": "^1.3.11",
     "@pnp/odata": "^1.3.11",
@@ -38,6 +39,7 @@
     "js-logger": "^1.7.0-next.e8a6f6c",
     "npm-check-updates": "^4.1.2",
     "regenerator-runtime": "^0.13.5",
+    "robot3": "^0.2.16",
     "sirv-cli": "^0.4.4",
     "xstate": "^4.9.1",
     "xstate-svelte": "^0.1.1"

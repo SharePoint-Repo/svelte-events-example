@@ -1,10 +1,22 @@
 export let config = {
   baseUrl: "http://localhost:8080",
   lists: [
-      {allEvents: ''},
-      {calendar: ''},
-      {calendar2: ''}, 
-      {calendar3: ''},
+      {
+        name: 'ALL EVENTS',
+        tabStatus: ' activeTab'
+      },
+      {
+        name: 'calendar',
+        tabStatus: ' inactiveTab'
+      },
+      {
+        name: 'calendar2',
+        tabStatus: ' inactiveTab'
+      }, 
+      {
+        name: 'calendar3',
+        tabStatus: ' inactiveTab'
+      },
   ]
 
 }
