@@ -148,7 +148,7 @@
 		text-decoration: none;
 
 	}
-	a:hover .JocEvent{
+	a:hover .event{
 		color: darkblue;
 
 	}
