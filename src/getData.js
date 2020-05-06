@@ -1,11 +1,55 @@
 import {isBefore, parseISO} from 'date-fns'
 import {sp} from "@pnp/sp";
-import Logger from 'js-logger';
 
-Logger.useDefaults(); 
 
+/*#if _SPVER == 2013 || 2016 
+export let getData = async (config)=>{
+    Logger.debug(config)
+    sp.setup({
+        sp: {
+            ie11: true,
+            defaultCachingStore: "local", // or "local"
+            defaultCachingTimeoutSeconds: 360,
+            globalCacheDisable: false, // or true to disable caching in case of debugging/testing
+            headers: {
+                Accept: "application/json;odata=verbose",
+            },
+            baseUrl: config.baseUrl 
+        }
+    });
+
+    let items = [];
+    const today = new Date().toISOString();
+    for(let list of config.lists){
+        await sp.web.lists.getByTitle(list)
+        .items
+        .filter('EventDate ge datetime' +"'" + today + "'")
+        .orderBy("EventDate")
+        .top(5)
+        .get()
+        .then(response => {
+            Logger.debug(response);
+            let temp = response.map(row => {
+                row.list = list;
+                row.linkUrl = (config.baseUrl) + "/lists/" + list + "/DispForm.aspx?ID=" + (row.ID); 
+                return row; 
+            });
+                
+            items = [...items,...temp];
+        })
+    }
+    items.sort((a,b) => {
+        if(moment(a.EventDate).isBefore(moment(b.EventDate))){return -1}
+        return 1
+    }) 
+    Logger.debug(items);
+    return items
+}
+//#elif _SPVER == 2019
+
+//#else */
 export const getData = async (config)=>{
-  
+    console.log(config); 
     sp.setup({
         sp: {
             ie11: true,
@@ -74,3 +118,4 @@ export const getData = async (config)=>{
   
     return items
 }
+//#endif

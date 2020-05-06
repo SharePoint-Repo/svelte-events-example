@@ -1,4 +1,4 @@
-import {useMachine} from '@kayodebristol/svelte-robot-factory'; 
+import {useMachine} from 'svelte-robot-factory'; 
 import machine from './eventMachine'; 
 
 const service = useMachine(machine); 

@@ -11,7 +11,7 @@ const context = () => ({
 }); 
 
 async function retrieve(){
-    return getData(config)
+    return await getData(config)
 }
 const machine = createMachine({
 	idle: state(
@@ -24,10 +24,9 @@ const machine = createMachine({
                 let s = {};
                 for(let i = 0; i<ctx.lists.length; i++){
 
-                    Object.defineProperty(s, ctx.lists[i].name, {value: ctx.lists[i].tabStatus,
-                        writable: false});
+                    Object.defineProperty(s, ctx.lists[i].name, {value: ctx.lists[i].tabStatus, writable: false});
                 }
-                console.log(s);
+                //console.log(s);
                 return { ...ctx, data: ev.data, tabStatus: s}
             })
         )
@@ -37,7 +36,7 @@ const machine = createMachine({
             reduce((ctx, ev)=>{ 
                 //console.log(ev);
                 let l = ctx.lists.map(value=>{             
-                    value.name == ev.data ? value.tabStatus = 'activeTab' : value.tabStatus = 'inactiveTab';
+                    value.name == ev.data ? value.tabStatus = ' activeTab' : value.tabStatus = ' inactiveTab';
                     return value; 
                 }); 
  

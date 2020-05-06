@@ -1,12 +1,18 @@
 <script>
 	import { isSameDay, format } from 'date-fns'
 	import {sp} from "@pnp/sp";
+	
+	/*#if _PNPCONFIG
+	import {config} from '../config/${_PNPCONFIG}'; 
+	//#else */
 	import {config} from './config';
-	import Logger from 'js-logger';
+	//#endif
+
+
 	import {onMount} from 'svelte';
 	import service from './store'; 
 	
-	Logger.useDefaults(); 
+
 	
 	const today = new Date();
 	const send = $service.send;
@@ -14,7 +20,7 @@
 	const listNames = $service.context.listNames;
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
-
+	
     (window).global = window;
 	if (global === undefined) {
    		var global = window;
@@ -31,20 +37,29 @@
 		{/each}
 	</div>
 	{#each (listNames) as listName}
+	
 		<div class='tabContent {tabStatus[listName]}' id={listName}>
+		{@debug $service}
 			{#await data}
 			<p>...retreiving data</p>
 			{:then data}
 			
 			<ul>Today's Events
+			{#if data.filter(event=>{
+				event.list == listName && isSameDay(event.EventDate, today)
+				
+			})
+			.length == 0}
+			<div class="event"><span class="title">None</span></div>
+			{/if}
 			{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
 				{#if isSameDay(EventDate, today) && list == listName}
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate, "ddMMM (HH:mm-")}</span><span class="endTime">{format(EndDate, "HH:mm)")} </span> <span class="title">- {Title}</span></div>					
+						<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
 					</a></li>
 				{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate, "ddMMM (HH:mm-")}</span><span class="endTime">{format(EndDate, "HH:mm)")} </span> <span class="title">- {Title}</span></div>					
+						<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
 					</a></li>
 				{/if}
 			{/each}
@@ -55,11 +70,11 @@
 				
 				{#if !(isSameDay(EventDate, today)) && list == listName }
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate,"ddMMM (HH:mm-")}</span><span class="endTime">{format(EndDate,"HH:mm)")} </span> <span class="title">- {Title}</span></div>					
+						<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
 					</a></li>
 				{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
 					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate,"ddMMM (HH:mm-")}</span><span class="endTime">{format(EndDate,"HH:mm)")} </span> <span class="title">- {Title}</span></div>					
+						<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
 					</a></li>
 
 				{/if}
