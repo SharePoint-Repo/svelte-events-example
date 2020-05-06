@@ -28,7 +28,7 @@
     "svelte": "^3.21.0"
   },
   "dependencies": {
-    "@kayodebristol/svelte-robot-factory": "^0.1.2",
+    "svelte-robot-factory": "^0.1.2",
     "@pnp/common": "^1.3.11",
     "@pnp/logging": "^1.3.11",
     "@pnp/odata": "^1.3.11",
