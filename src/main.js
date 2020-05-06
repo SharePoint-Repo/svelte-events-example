@@ -3,7 +3,7 @@ import App from './App.svelte';
 
 
 const app = new App({
-	/*#if _DEV
+	/*#if _DEV 
 	target: document.body
 	//#else */
 	target: document.getElementById("eventsViewer")

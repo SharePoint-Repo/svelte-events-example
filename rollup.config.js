@@ -21,9 +21,9 @@ export default {
 	plugins: [
 		jscc({
 			values:{
-				_DEV: process.env.ROLLUP_WATCH,
+				_DEV: !production,
 				_PNPCONFIG: process.env.pnpconfig,
-				_SPVER: process.env.spver 
+				_SPVER: process.env.spver ? process.env.spver : 0
 			}
 		}),
 		svelte({

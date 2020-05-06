@@ -21,6 +21,19 @@
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
 	
+	const exists = function(ln, filterType){
+		let x = [...$service.context.data].filter(e=> fiterType(e, ln) ); 
+
+		return (x.length > 0)
+	}; 
+	
+	const filterToday = function(e, ln){
+		return e.list == ln && isSameDay(e.EventDate, today) == true
+	}; 
+	
+	const filterTodayAll = function(e, ln){
+		return isSameDay(e.EventDate, today) == true
+	}; 
     (window).global = window;
 	if (global === undefined) {
    		var global = window;
@@ -39,30 +52,23 @@
 	{#each (listNames) as listName}
 	
 		<div class='tabContent {tabStatus[listName]}' id={listName}>
-		{@debug $service}
+
 			{#await data}
-			<p>...retreiving data</p>
+				<p>...retreiving data</p>
 			{:then data}
 			
 			<ul>Today's Events
-			{#if data.filter(event=>{
-				event.list == listName && isSameDay(event.EventDate, today)
-				
-			})
-			.length == 0}
-			<div class="event"><span class="title">None</span></div>
-			{/if}
-			{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
-				{#if isSameDay(EventDate, today) && list == listName}
-					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
-					</a></li>
-				{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
-					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
-					</a></li>
-				{/if}
-			{/each}
+				{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
+					{#if isSameDay(EventDate, today) && list == listName}
+						<li><a target="_blank" href="{linkUrl}">
+							<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
+						</a></li>
+					{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
+						<li><a target="_blank" href="{linkUrl}">
+							<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
+						</a></li>
+					{/if}
+				{/each}
 			</ul>
 			
 			<ul>Upcoming Events

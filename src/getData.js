@@ -2,7 +2,7 @@ import {isBefore, parseISO} from 'date-fns'
 import {sp} from "@pnp/sp";
 
 
-/*#if _SPVER == 2013 || 2016 
+/*#if _SPVER == 2013 || _SPVER == 2016 
 export let getData = async (config)=>{
     Logger.debug(config)
     sp.setup({
@@ -112,10 +112,10 @@ export const getData = async (config)=>{
         })
     }
     items.sort((a,b) => {
-        if( isBefore(parseISO(a.EventDate), parseISO(b.EventDate))){return -1}
+        if( isBefore(a.EventDate, b.EventDate)){return -1}
         return 1
-    }) 
+    }) ;
   
-    return items
+    return items;
 }
 //#endif
