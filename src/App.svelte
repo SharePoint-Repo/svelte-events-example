@@ -1,19 +1,9 @@
 <script>
 	import { isSameDay, format } from 'date-fns'
 	import {sp} from "@pnp/sp";
-	
-	/*#if _PNPCONFIG
-	import {config} from '../config/${_PNPCONFIG}'; 
-	//#else */
-	import {config} from './config';
-	//#endif
-
-
 	import {onMount} from 'svelte';
 	import service from './store'; 
-	
-
-	
+		
 	const today = new Date();
 	const send = $service.send;
 	let lists = $service.context.lists;
@@ -21,19 +11,7 @@
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
 	
-	const exists = function(ln, filterType){
-		let x = [...$service.context.data].filter(e=> fiterType(e, ln) ); 
-
-		return (x.length > 0)
-	}; 
 	
-	const filterToday = function(e, ln){
-		return e.list == ln && isSameDay(e.EventDate, today) == true
-	}; 
-	
-	const filterTodayAll = function(e, ln){
-		return isSameDay(e.EventDate, today) == true
-	}; 
     (window).global = window;
 	if (global === undefined) {
    		var global = window;
@@ -58,7 +36,9 @@
 			{:then data}
 			
 			<ul>Today's Events
-				{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
+				
+				{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}}
+
 					{#if isSameDay(EventDate, today) && list == listName}
 						<li><a target="_blank" href="{linkUrl}">
 							<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
@@ -69,6 +49,7 @@
 						</a></li>
 					{/if}
 				{/each}
+
 			</ul>
 			
 			<ul>Upcoming Events

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rollup -c ",
+    "make": "rollup -c --environment ",
     "dev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w \"",
     "start": "sirv public",
     "proxy": "node ./api-server.js"
