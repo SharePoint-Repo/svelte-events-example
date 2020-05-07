@@ -17,8 +17,8 @@ const existsCount = function(data, ln, filterType){
     console.log(ln); 
     console.log(filterType)
 
-    let x = data.filter(e=> filterType(e, ln) ); 
-
+    let x = data.filter(e=> filterType(e, ln)); 
+    console.log(x);
     return (x.length)
 }; 
 
@@ -27,10 +27,10 @@ const filterToday = function(e, ln){
     console.log(ln);
     if(ln == 'ALL EVENTS')
     {
-        return (isSameDay(e.EventDate, today) == true);
+        return (isSameDay(e.EventDate, today) );
     }
     else{
-        return e.list == ln && isSameDay(e.EventDate, today) == true
+        return e.list == ln && isSameDay(e.EventDate, today);
     }
 }; 
 
@@ -58,16 +58,18 @@ const machine = createMachine({
                 for(let i = 0; i<lists.length; i++){
 
                     Object.defineProperty(s, lists[i].name, {value: lists[i].tabStatus, writable: false});
+                   // Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
+                    // Object.defineProperty(s, lists[i].name + '_total', {value: existsCount(ev.data, lists[i].name, (e, ln)=>true), writable: false});
                 }
                 
-                lists = lists.map(list=>{                    
+               /* lists = lists.map(list=>{                    
                     list.today = existsCount(ev.data, list.name, filterToday); 
-                    list.total = existsCount(ev.data, listName, ()=>true)
+                    list.total = existsCount(ev.data, list.name, (e, ln)=>true)
                     return list; 
                 }); 
-                 
+                 */
                 //console.log(s);
-                return { ...ctx, data: ev.data, tabStatus: s, lists: lists}
+                return { ...ctx, data: ev.data, tabStatus: s}
             })
         )
     ), 

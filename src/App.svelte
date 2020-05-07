@@ -6,7 +6,7 @@
 		
 	const today = new Date();
 	const send = $service.send;
-	let lists = $service.context.lists;
+	//const lists = $service.context.lists;
 	const listNames = $service.context.listNames;
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
@@ -24,7 +24,7 @@
 <main>
 	<div class='tab'>
 		{#each (listNames) as listName}
-		<button class='tabButton {tabStatus[listName]}' on:click|preventDefault={(event)=>send({type:'click', data: listName})}>{listName.replace('BLDG 3317 ', '')}</button>
+			<button class='tabButton {tabStatus[listName]}' on:click|preventDefault={(event)=>send({type:'click', data: listName})}>{listName.replace('BLDG 3317 ', '')}</button>
 		{/each}
 	</div>
 	{#each (listNames) as listName}
@@ -37,38 +37,38 @@
 			
 			<ul>Today's Events
 				
-				{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}}
+					{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}}
 
-					{#if isSameDay(EventDate, today) && list == listName}
-						<li><a target="_blank" href="{linkUrl}">
-							<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
-						</a></li>
-					{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
-						<li><a target="_blank" href="{linkUrl}">
-							<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
-						</a></li>
-					{/if}
-				{/each}
-
+						{#if isSameDay(EventDate, today) && list == listName}
+							<li><a target="_blank" href="{linkUrl}">
+								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
+							</a></li>
+						{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
+							<li><a target="_blank" href="{linkUrl}">
+								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
+							</a></li>
+						{/if}
+					{/each}
+				
 			</ul>
 			
 			<ul>Upcoming Events
-			{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
-				
-				{#if !(isSameDay(EventDate, today)) && list == listName }
-					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
-					</a></li>
-				{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
-					<li><a target="_blank" href="{linkUrl}">
-						<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
-					</a></li>
+				{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
+					
+					{#if !(isSameDay(EventDate, today)) && list == listName }
+						<li><a target="_blank" href="{linkUrl}">
+							<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
+						</a></li>
+					{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
+						<li><a target="_blank" href="{linkUrl}">
+							<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
+						</a></li>
 
-				{/if}
-			{/each}
+					{/if}
+				{/each}
 			</ul>
 			{:catch error }
-			<p style="color: red">{error.message}</p>
+				<p style="color: red">{error.message}</p>
 			{/await}
 		</div>
 	{/each}
