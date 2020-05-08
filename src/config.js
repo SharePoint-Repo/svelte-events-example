@@ -3,27 +3,19 @@ export let config = {
   lists: [
       {
         name: 'ALL EVENTS',
-        tabStatus: ' activeTab', 
-        today: 0, 
-        total: 0
+        tabStatus: ' activeTab'
       },
       {
         name: 'calendar',
-        tabStatus: ' inactiveTab', 
-        today: 0, 
-        total: 0
+        tabStatus: ' inactiveTab'
       },
       {
         name: 'calendar2',
-        tabStatus: ' inactiveTab', 
-        today: 0, 
-        total: 0
+        tabStatus: ' inactiveTab'
       }, 
       {
         name: 'calendar3',
-        tabStatus: ' inactiveTab', 
-        today: 0, 
-        total: 0
+        tabStatus: ' inactiveTab'
       },
   ], 
   replaceText: ''

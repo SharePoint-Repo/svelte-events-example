@@ -29,7 +29,7 @@ export let getData = async (config)=>{
         .top(5)
         .get()
         .then(response => {
-            console.log(response);
+           
             let temp = response.map(row => {
                 row.list = list.name;
                 row.linkUrl = (config.baseUrl) + "/list/" + (list.name) + "/DispForm.aspx?ID=" + (row.ID);
@@ -45,7 +45,7 @@ export let getData = async (config)=>{
         if( isBefore(a.EventDate, b.EventDate)){return -1}
         return 1
     }) ;
-    console.log(items);
+   
     return items
 }
 
