@@ -25,6 +25,7 @@ export let config = {
         today: 0, 
         total: 0
       },
-  ]
+  ], 
+  replaceText: ''
 
 }

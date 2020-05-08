@@ -2,9 +2,9 @@ import {isBefore, parseISO} from 'date-fns';
 import {sp} from "@pnp/sp";
 
 
-/*#if _SPVER == 2013 || _SPVER == 2016 
+/*#if _SPVER == 2013 || _SPVER == 2016 || _SPVER == 2019
 export let getData = async (config)=>{
-    Logger.debug(config)
+   
     sp.setup({
         sp: {
             ie11: true,
@@ -21,31 +21,34 @@ export let getData = async (config)=>{
     let items = [];
     const today = new Date().toISOString();
     for(let list of config.lists){
-        await sp.web.lists.getByTitle(list)
+        if(list.name == 'ALL EVENTS'){continue;}
+        await sp.web.lists.getByTitle(list.name)
         .items
         .filter('EventDate ge datetime' +"'" + today + "'")
         .orderBy("EventDate")
         .top(5)
         .get()
         .then(response => {
-            Logger.debug(response);
+            console.log(response);
             let temp = response.map(row => {
-                row.list = list;
-                row.linkUrl = (config.baseUrl) + "/lists/" + list + "/DispForm.aspx?ID=" + (row.ID); 
-                return row; 
+                row.list = list.name;
+                row.linkUrl = (config.baseUrl) + "/list/" + (list.name) + "/DispForm.aspx?ID=" + (row.ID);
+                row.EventDate = parseISO(row.EventDate); 
+                row.EndDate = parseISO(row.EndDate);
+                return row;
             });
                 
             items = [...items,...temp];
         })
     }
     items.sort((a,b) => {
-        if(moment(a.EventDate).isBefore(moment(b.EventDate))){return -1}
+        if( isBefore(a.EventDate, b.EventDate)){return -1}
         return 1
-    }) 
-    Logger.debug(items);
+    }) ;
+    console.log(items);
     return items
 }
-//#elif _SPVER == 2019
+
 
 //#else */
 export const getData = async (config)=>{

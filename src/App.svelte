@@ -8,6 +8,7 @@
 	const send = $service.send;
 	//const lists = $service.context.lists;
 	const listNames = $service.context.listNames;
+	const replaceText = $service.context.replaceText; 
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
 	$: state = $service.machine.current; 
@@ -45,7 +46,7 @@
 								</a></li>
 							{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
 								<li><a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
+									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace(replaceText, '') + " - " + Title}</span></div>					
 								</a></li>
 							{/if}
 						{/each}
@@ -67,7 +68,7 @@
 								</a></li>
 							{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
 								<li><a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
+									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace(replaceText, '') + " - " + Title}</span></div>					
 								</a></li>
 
 							{/if}
@@ -83,13 +84,12 @@
 			{/await}
 		</div>
 	{/each}
-	{@debug $service}
 </main>
 
 <style>
 	main {
 		text-align: left;
-		max-width: 240px;
+		min-width: 430px;
 		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 	}
 	.tab {

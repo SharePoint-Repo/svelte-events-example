@@ -14,12 +14,7 @@ const context = (config) => ({
 }); 
 
 const existsCount = function(data, ln, filterType){
-    console.log(data); 
-    console.log(ln); 
-    console.log(filterType)
-
     let x = data.filter(e=> filterType(e, ln)); 
-    console.log(x);
     return (x.length)
 }; 
 
@@ -50,8 +45,6 @@ const filterUpcoming = function(e, ln){
 
 async function retrieve(ctx){
     
-    console.log("Retrieve");
-    console.log(ctx);
     let data = await getData(ctx.config);     
     return data; 
 }
@@ -72,14 +65,6 @@ const machine = createMachine({
                     Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
                     Object.defineProperty(s, lists[i].name + '_upcoming', {value: existsCount(ev.data, lists[i].name, filterUpcoming), writable: false});
                 }
-                
-               /* lists = lists.map(list=>{                    
-                    list.today = existsCount(ev.data, list.name, filterToday); 
-                    list.total = existsCount(ev.data, list.name, (e, ln)=>true)
-                    return list; 
-                }); 
-                 */
-                //console.log(s);
                 return { ...ctx, data: ev.data, tabStatus: s}
             })
         )
@@ -87,7 +72,6 @@ const machine = createMachine({
     display: state(
         transition('click', 'display',
             reduce((ctx, ev)=>{ 
-                //console.log(ev);
                 let l = ctx.lists.map(value=>{             
                     value.name == ev.data ? value.tabStatus = ' activeTab' : value.tabStatus = ' inactiveTab';
                     return value; 
@@ -98,7 +82,6 @@ const machine = createMachine({
                 l.map(list=>{
                     s[list.name] = list.tabStatus; 
                 }); 
-                console.log(s);
 
                 return { ...ctx, lists: l, tabStatus: s}
             })
