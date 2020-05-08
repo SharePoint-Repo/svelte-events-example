@@ -12,7 +12,7 @@ const context = (config) => ({
     config: config
     
 }); 
-
+/*
 const existsCount = function(data, ln, filterType){
     let x = data.filter(e=> filterType(e, ln)); 
     return (x.length)
@@ -40,7 +40,7 @@ const filterUpcoming = function(e, ln){
         return e.list == ln && !(isSameDay(e.EventDate, today));
     }
 }; 
-
+*/
 
 
 async function retrieve(ctx){
@@ -62,8 +62,8 @@ const machine = createMachine({
                 for(let i = 0; i<lists.length; i++){
 
                     Object.defineProperty(s, lists[i].name, {value: lists[i].tabStatus, writable: true});
-                    Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
-                    Object.defineProperty(s, lists[i].name + '_upcoming', {value: existsCount(ev.data, lists[i].name, filterUpcoming), writable: false});
+                    //Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
+                    //Object.defineProperty(s, lists[i].name + '_upcoming', {value: existsCount(ev.data, lists[i].name, filterUpcoming), writable: false});
                 }
                 return { ...ctx, data: ev.data, tabStatus: s}
             })

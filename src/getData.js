@@ -52,7 +52,6 @@ export let getData = async (config)=>{
 
 //#else */
 export const getData = async (config)=>{
-    console.log(config); 
     sp.setup({
         sp: {
             ie11: true,

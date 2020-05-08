@@ -37,47 +37,42 @@
 			{:then data}
 			
 				<ul>Today's Events
-					{#if tabStatus[listName + "_today"]}				
-						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}}
-
+					<li><div id={listName + "_today_none"}>None</div></li>					
+						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
+						
 							{#if isSameDay(EventDate, today) && list == listName}
+								{@html `<style type='text/css'>#${listName}_today_none{display:none}</style>`}
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
 								</a></li>
 							{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
+								{@html `<style type='text/css'>#ALL\\ EVENTS_today_none{display:none}</style>`}
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace(replaceText, '') + " - " + Title}</span></div>					
 								</a></li>
 							{/if}
 						{/each}
-					{:else}
-						<li>
-							<div class="event">None</div>					
-						</li>
-					{/if}
 					
 				</ul>
 				
 				<ul>Upcoming Events
-					{#if tabStatus[listName + "_upcoming"]}	
+					<li><div id={listName + "_upcoming_none"}>None</div></li>		
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
-							
+						
 							{#if !(isSameDay(EventDate, today)) && list == listName }
+								{@html `<style type='text/css'>#${listName}_upcoming_none{display:none}</style>`}	
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
 								</a></li>
 							{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
+								{@html `<style type='text/css'>#ALL\\ EVENTS_upcoming_none{display:none}</style>`}	
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace(replaceText, '') + " - " + Title}</span></div>					
 								</a></li>
 
 							{/if}
 						{/each}
-					{:else}
-						<li>
-							<div class="event">None</div>					
-						</li>
-					{/if}
+					
 				</ul>
 			{:catch error }
 				<p style="color: red">{error.message}</p>
