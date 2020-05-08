@@ -10,7 +10,7 @@
 	const listNames = $service.context.listNames;
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
-	
+	$: state = $service.machine.current; 
 	
     (window).global = window;
 	if (global === undefined) {
@@ -35,43 +35,55 @@
 				<p>...retreiving data</p>
 			{:then data}
 			
-			<ul>Today's Events
-				
-					{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}}
+				<ul>Today's Events
+					{#if tabStatus[listName + "_today"]}				
+						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}}
 
-						{#if isSameDay(EventDate, today) && list == listName}
-							<li><a target="_blank" href="{linkUrl}">
-								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
-							</a></li>
-						{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
-							<li><a target="_blank" href="{linkUrl}">
-								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
-							</a></li>
-						{/if}
-					{/each}
-				
-			</ul>
-			
-			<ul>Upcoming Events
-				{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
-					
-					{#if !(isSameDay(EventDate, today)) && list == listName }
-						<li><a target="_blank" href="{linkUrl}">
-							<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
-						</a></li>
-					{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
-						<li><a target="_blank" href="{linkUrl}">
-							<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
-						</a></li>
-
+							{#if isSameDay(EventDate, today) && list == listName}
+								<li><a target="_blank" href="{linkUrl}">
+									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
+								</a></li>
+							{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
+								<li><a target="_blank" href="{linkUrl}">
+									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
+								</a></li>
+							{/if}
+						{/each}
+					{:else}
+						<li>
+							<div class="event">None</div>					
+						</li>
 					{/if}
-				{/each}
-			</ul>
+					
+				</ul>
+				
+				<ul>Upcoming Events
+					{#if tabStatus[listName + "_upcoming"]}	
+						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
+							
+							{#if !(isSameDay(EventDate, today)) && list == listName }
+								<li><a target="_blank" href="{linkUrl}">
+									<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
+								</a></li>
+							{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
+								<li><a target="_blank" href="{linkUrl}">
+									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace('BLDG 3317 ', '') + " - " + Title}</span></div>					
+								</a></li>
+
+							{/if}
+						{/each}
+					{:else}
+						<li>
+							<div class="event">None</div>					
+						</li>
+					{/if}
+				</ul>
 			{:catch error }
 				<p style="color: red">{error.message}</p>
 			{/await}
 		</div>
 	{/each}
+	{@debug $service}
 </main>
 
 <style>

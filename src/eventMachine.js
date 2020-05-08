@@ -2,6 +2,7 @@ import { createMachine, state, transition, invoke, reduce, action } from 'robot3
 import {isSameDay, parseISO} from 'date-fns'; 
 import {getData} from './getData';
 
+
 const today = new Date(); 
 const context = (config) => ({
     data: [], 
@@ -24,7 +25,7 @@ const existsCount = function(data, ln, filterType){
 
 
 const filterToday = function(e, ln){
-    console.log(ln);
+    
     if(ln == 'ALL EVENTS')
     {
         return (isSameDay(e.EventDate, today) );
@@ -34,6 +35,16 @@ const filterToday = function(e, ln){
     }
 }; 
 
+const filterUpcoming = function(e, ln){
+    
+    if(ln == 'ALL EVENTS')
+    {
+        return true && !(isSameDay(e.EventDate, today));
+    }
+    else{
+        return e.list == ln && !(isSameDay(e.EventDate, today));
+    }
+}; 
 
 
 
@@ -57,9 +68,9 @@ const machine = createMachine({
                 let s = {};
                 for(let i = 0; i<lists.length; i++){
 
-                    Object.defineProperty(s, lists[i].name, {value: lists[i].tabStatus, writable: false});
-                   // Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
-                    // Object.defineProperty(s, lists[i].name + '_total', {value: existsCount(ev.data, lists[i].name, (e, ln)=>true), writable: false});
+                    Object.defineProperty(s, lists[i].name, {value: lists[i].tabStatus, writable: true});
+                    Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
+                    Object.defineProperty(s, lists[i].name + '_upcoming', {value: existsCount(ev.data, lists[i].name, filterUpcoming), writable: false});
                 }
                 
                /* lists = lists.map(list=>{                    
@@ -82,12 +93,11 @@ const machine = createMachine({
                     return value; 
                 }); 
  
-                let s = {};
-                for(let i = 0; i<l.length; i++){
-
-                    Object.defineProperty(s, l[i].name, {value: l[i].tabStatus,
-                        writable: false});
-                }
+                let s = ctx.tabStatus;
+                
+                l.map(list=>{
+                    s[list.name] = list.tabStatus; 
+                }); 
                 console.log(s);
 
                 return { ...ctx, lists: l, tabStatus: s}
