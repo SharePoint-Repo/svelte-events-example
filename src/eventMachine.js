@@ -5,7 +5,7 @@ import {getData} from './getData';
 
 const today = new Date(); 
 const context = (config) => ({
-    data: [], 
+    data: new Promise((resolve, reject)=>{setTimeout(()=>[],30000)}), 
     lists: config.lists,
     listNames: config.lists.map(list=>list.name),
     tabStatus: {},
@@ -50,7 +50,18 @@ async function retrieve(ctx){
 }
 const machine = createMachine({
 	idle: state(
-        transition('mount', 'loading' 
+        transition('mount', 'loading', 
+            reduce((ctx, ev)=>{
+                let lists = [...ctx.lists];
+                let s = {};
+                for(let i = 0; i<lists.length; i++){
+
+                    Object.defineProperty(s, lists[i].name, {value: lists[i].tabStatus, writable: true});
+                    //Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
+                    //Object.defineProperty(s, lists[i].name + '_upcoming', {value: existsCount(ev.data, lists[i].name, filterUpcoming), writable: false});
+                }
+                return { ...ctx,  tabStatus: s};
+            }) 
                
         )
 	),
@@ -65,7 +76,7 @@ const machine = createMachine({
                     //Object.defineProperty(s, lists[i].name + '_today', {value: existsCount(ev.data, lists[i].name, filterToday), writable: false});
                     //Object.defineProperty(s, lists[i].name + '_upcoming', {value: existsCount(ev.data, lists[i].name, filterUpcoming), writable: false});
                 }
-                return { ...ctx, data: ev.data, tabStatus: s}
+                return { ...ctx, data: ev.data, tabStatus: s};
             })
         )
     ), 
@@ -83,7 +94,7 @@ const machine = createMachine({
                     s[list.name] = list.tabStatus; 
                 }); 
 
-                return { ...ctx, lists: l, tabStatus: s}
+                return { ...ctx, lists: l, tabStatus: s};
             })
         )
     )
