@@ -42,11 +42,11 @@ export let getData = async (config)=>{
         })
     }
     items.sort((a,b) => {
-        if( isBefore(a.EventDate, b.EventDate)){return -1}
-        return 1
+        if( isBefore(a.EventDate, b.EventDate)){return -1;}
+        return 1;
     }) ;
     
-    return items
+    return items; 
 }
 
 
@@ -121,8 +121,8 @@ export const getData = async (config)=>{
     return items;
 }
 //#else */
-export let getData = async (config)=>{
-   
+
+export const getData = async (config)=>{
     sp.setup({
         sp: {
             ie11: true,
@@ -135,36 +135,62 @@ export let getData = async (config)=>{
             baseUrl: config.baseUrl 
         }
     });
-
+    const overrideViewXml =  `
+            <View>
+                <QueryOptions>
+                        <ExpandRecurrence>"TRUE"</ExpandRecurrence>
+                        <RecurrenceOrderBy>"TRUE"</RecurrenceOrderBy>
+                        <ViewAttributes Scope="RecursiveAll"/>
+                </QueryOptions>
+                <Orderby>
+                    <FieldRef Name="EventDate"/>
+                </Orderby>
+                <Query>
+                    <Where>
+                        <DateRangesOverlap>
+                            <FieldRef Name="EventDate"></FieldRef>
+                            <FieldRef Name="EndDate"></FieldRef>
+                            <FieldRef Name="RecurrenceID"></FieldRef>
+                            <Value Type="DateTime">
+                                <Now/>
+                            </Value>
+                        </DateRangesOverlap>
+                    </Where>
+                </Query>
+            </View>
+            `;
+    
     let items = [];
-    const today = new Date().toISOString();
+    
     for(let list of config.lists){
-        if(list.name == 'ALL EVENTS'){continue;}
+        if (list.name == 'ALL EVENTS'){continue;}
         await sp.web.lists.getByTitle(list.name)
-        .items
-        .filter('EventDate ge datetime' +"'" + today + "'")
-        .orderBy("EventDate")
-        .top(5)
-        .get()
+        .renderListDataAsStream({
+
+            //OverrideViewXml: overrideViewXml,
+            ViewXml: overrideViewXml,
+            
+            //Paging:'Paged=TRUE&RowLimit=5'
+        })
         .then(response => {
-           
-            let temp = response.map(row => {
+          
+            let temp = response.Row.map(row => {
                 row.list = list.name;
                 row.linkUrl = (config.baseUrl) + "/list/" + (list.name) + "/DispForm.aspx?ID=" + (row.ID);
-                row.EventDate = parseISO(row.EventDate); 
-                row.EndDate = parseISO(row.EndDate);
-                return row;
+                row.EventDate = parseISO(row['EventDate.']); 
+                row.EndDate = parseISO(row['EndDate.'])
+                return row; 
             });
-                
+            
             items = [...items,...temp];
         })
     }
     items.sort((a,b) => {
-        if( isBefore(a.EventDate, b.EventDate)){return -1}
+        if( isBefore(a.EventDate, b.EventDate)){return -1};
         return 1
     }) ;
-    
-    return items
+  
+    return items;
 }
 
 //#endif
