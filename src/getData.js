@@ -181,7 +181,7 @@ export const getData = async (config)=>{
                     var row = {
                         Title: $node.attr("ows_Title"),
                         list: list.name, 
-                        linkUrl:(config.baseUrl) + "/list/" + (list.name) + "/DispForm.aspx?ID=" + $node.attr("ows_ID"),
+                        linkUrl:(config.baseUrl) + "/Lists/" + (list.name) + "/DispForm.aspx?ID=" + $node.attr("ows_ID"),
                         EventDate: parseISO($node.attr("ows_EventDate")),
                         EndDate: parseISO($node.attr("ows_EndDate")),
                         Location: $node.attr("ows_Location"),
@@ -211,3 +211,4 @@ export const getData = async (config)=>{
 };
 
 //#endif
+
