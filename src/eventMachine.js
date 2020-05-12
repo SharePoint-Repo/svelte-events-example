@@ -5,7 +5,7 @@ import {getData} from './getData';
 
 const today = new Date(); 
 const context = (config) => ({
-    data: new Promise((resolve, reject)=>{setTimeout(()=>[],30000)}), 
+    data: new Promise((resolve, reject)=>{setTimeout(()=>[],30000);}), 
     lists: config.lists,
     listNames: config.lists.map(list=>list.name),
     tabStatus: {},

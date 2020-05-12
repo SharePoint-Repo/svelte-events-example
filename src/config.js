@@ -1,5 +1,5 @@
 export let config = {
-  baseUrl: "http://localhost:8080",
+  baseUrl: "https://arylether.sharepoint.com/sites/Sandbox",
   lists: [
       {
         name: 'ALL EVENTS',
@@ -20,4 +20,4 @@ export let config = {
   ], 
   replaceText: ''
 
-}
+};

@@ -6,7 +6,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import injectProcessEnv from 'rollup-plugin-inject-process-env';
 import jscc from 'rollup-plugin-jscc';
-
+import sourcemap from 'rollup-plugin-sourcemaps'; 
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -19,6 +19,7 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		//sourcemap(),
 		jscc({
 			values:{
 				_DEV: !production,
@@ -26,6 +27,7 @@ export default {
 				_SPVER: process.env.spver ? process.env.spver : 0
 			}
 		}),
+
 		svelte({
 			//customElement: true,
 			// enable run-time checks when not in production
@@ -36,7 +38,7 @@ export default {
 				css.write('public/build/bundle.css');
 			}
 		}),
-		
+
 		
 		
 
@@ -56,6 +58,8 @@ export default {
 			{
 				extensions: [ '.js', '.mjs', '.html', '.svelte' ],
 				runtimeHelpers: true,
+				sourceMaps: true,
+				inputSourceMap: true,
 				exclude: [ 'node_modules/core-js/**' ],
 				presets: [
 					[

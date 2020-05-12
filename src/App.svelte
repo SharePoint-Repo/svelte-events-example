@@ -1,5 +1,5 @@
 <script>
-	import { isSameDay, format } from 'date-fns'
+	import { isSameDay, format, isAfter } from 'date-fns'
 	import {sp} from "@pnp/sp";
 	import {onMount} from 'svelte';
 	import service from './store'; 
@@ -13,11 +13,12 @@
 	$: tabStatus = $service.context.tabStatus;
 	$: state = $service.machine.current; 
 	
-    (window).global = window;
-	if (global === undefined) {
-   		var global = window;
-	}		
-	
+  (window).global = window;
+
+if (global === undefined) {
+    var global = window;
+} 		
+		
 
 	onMount(()=>{send('mount');});
 </script>
@@ -59,12 +60,12 @@
 					<li><div id={listName + "_upcoming_none"}>None</div></li>		
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
 						
-							{#if !(isSameDay(EventDate, today)) && list == listName }
+							{#if (isAfter(EventDate, today)) && list == listName }
 								{@html `<style type='text/css'>#${listName}_upcoming_none{display:none}</style>`}	
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
 								</a></li>
-							{:else if !(isSameDay(EventDate, today)) && listName == 'ALL EVENTS'}
+							{:else if (isAfter(EventDate, today)) && listName == 'ALL EVENTS'}
 								{@html `<style type='text/css'>#ALL\\ EVENTS_upcoming_none{display:none}</style>`}	
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace(replaceText, '') + " - " + Title}</span></div>					
