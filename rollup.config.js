@@ -19,7 +19,7 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
-		//sourcemap(),
+		sourcemap(),
 		jscc({
 			values:{
 				_DEV: !production,

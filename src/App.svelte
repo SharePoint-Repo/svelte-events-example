@@ -8,16 +8,16 @@
 	const send = $service.send;
 	//const lists = $service.context.lists;
 	const listNames = $service.context.listNames;
-	const replaceText = $service.context.replaceText; 
+	const replaceText = $service.context.config.replaceText; 
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
 	$: state = $service.machine.current; 
 	
   (window).global = window;
 
-if (global === undefined) {
-    var global = window;
-} 		
+	if (global === undefined) {
+		var global = window;
+	} 		
 		
 
 	onMount(()=>{send('mount');});
@@ -38,18 +38,18 @@ if (global === undefined) {
 			{:then data}
 			
 				<ul>Today's Events
-					<li><div id={listName + "_today_none"}>None</div></li>					
+					<li><div id={listName.replace(/\s/g, '') + "_today_none"}>None</div></li>					
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
 						
 							{#if isSameDay(EventDate, today) && list == listName}
-								{@html `<style type='text/css'>#${listName}_today_none{display:none}</style>`}
+								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_today_none{display:none}</style>`}
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
 								</a></li>
 							{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
-								{@html `<style type='text/css'>#ALL\\ EVENTS_today_none{display:none}</style>`}
+								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_today_none{display:none}</style>`}
 								<li><a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace(replaceText, '') + " - " + Title}</span></div>					
+									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
 								</a></li>
 							{/if}
 						{/each}
@@ -57,18 +57,18 @@ if (global === undefined) {
 				</ul>
 				
 				<ul>Upcoming Events
-					<li><div id={listName + "_upcoming_none"}>None</div></li>		
+					<li><div id={listName.replace(/\s/g, '') + "_upcoming_none"}>None</div></li>		
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
 						
 							{#if (isAfter(EventDate, today)) && list == listName }
-								{@html `<style type='text/css'>#${listName}_upcoming_none{display:none}</style>`}	
+								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_upcoming_none{display:none}</style>`}	
 								<li><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
 								</a></li>
 							{:else if (isAfter(EventDate, today)) && listName == 'ALL EVENTS'}
-								{@html `<style type='text/css'>#ALL\\ EVENTS_upcoming_none{display:none}</style>`}	
+								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_upcoming_none{display:none}</style>`}	
 								<li><a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {list.replace(replaceText, '') + " - " + Title}</span></div>					
+									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
 								</a></li>
 
 							{/if}

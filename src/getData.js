@@ -1,8 +1,9 @@
 import {isBefore, parseISO} from 'date-fns'; 
-import {sp} from "@pnp/sp";
+
 
 
 /*#if _SPVER == 2013 || _SPVER == 2016 || _SPVER == 2019
+import {sp} from "@pnp/sp";
 export let getData = async (config)=>{
    
     sp.setup({
@@ -136,8 +137,10 @@ export const getData = async (config)=>{
     const startDate = new Date();
     var items = [];
     for(let list of config.lists){
-        if (list.name == 'ALL EVENTS'){continue;}
-        $().SPServices({
+        if ((list.name) == "ALL EVENTS"){continue;}
+        else{
+            console.log(list.name);
+            await $().SPServices({
                 
             operation: "GetListItems",
             async: false,
@@ -190,13 +193,15 @@ export const getData = async (config)=>{
                         RecurrenceData: $node.attr("ows_RecurrenceData"), 
                         fAllDayEvent: $node.attr("ows_fAllDayEvent")
                     };
-                    //console.log(row); 
+                    console.log(row); 
                     items = [...items, row];
 
                 });
                 
             }
         });
+        }
+        
         
     }
     
@@ -211,4 +216,3 @@ export const getData = async (config)=>{
 };
 
 //#endif
-

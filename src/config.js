@@ -1,5 +1,5 @@
 export let config = {
-  baseUrl: "https://arylether.sharepoint.com/sites/Sandbox",
+  baseUrl: "http://localhost:8080",
   lists: [
       {
         name: 'ALL EVENTS',

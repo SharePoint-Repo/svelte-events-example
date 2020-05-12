@@ -3,10 +3,10 @@ import 'robot3/debug';
 
 
 const app = new App({
-	/*#if !_DEV 
-	target: document.getElementById("eventsViewer")
-	//#else */
+	/*#if _DEV 
 	target: document.body
+	//#else */
+	target: document.getElementById("eventsViewer")
 	//#endif 
 	
 });
