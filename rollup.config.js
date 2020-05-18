@@ -27,7 +27,6 @@ export default {
 				_SPVER: process.env.spver ? process.env.spver : 0
 			}
 		}),
-
 		svelte({
 			//customElement: true,
 			// enable run-time checks when not in production
@@ -38,10 +37,6 @@ export default {
 				css.write('public/build/bundle.css');
 			}
 		}),
-
-		
-		
-
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
 		// some cases you'll need additional configuration -
@@ -51,7 +46,6 @@ export default {
 			browser: true,
 			dedupe: ['svelte']
 		}),
-		
 		commonjs(),
 		 // compile to good old IE11 compatible ES5
 		 babel(

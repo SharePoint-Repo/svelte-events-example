@@ -1,23 +1,23 @@
 export let config = {
-  baseUrl: "http://localhost:8080",
+  baseUrl: "https://portal.usafricom.smil.mil/tools/crs",
   lists: [
       {
         name: 'ALL EVENTS',
-        tabStatus: ' activeTab'
+        tabStatus: ' activeTab',
       },
       {
-        name: 'calendar',
+        name: 'BLDG 3317 RM 103',
         tabStatus: ' inactiveTab'
       },
       {
-        name: 'calendar2',
+        name: 'BLDG 3317 RM 104',
         tabStatus: ' inactiveTab'
       }, 
       {
-        name: 'calendar3',
+        name: 'BLDG 3317 RM 207',
         tabStatus: ' inactiveTab'
       },
   ], 
-  replaceText: ''
-
+  replaceText: 'BLDG 3317 '
 };
+

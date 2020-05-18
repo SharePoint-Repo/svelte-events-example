@@ -123,6 +123,7 @@ export const getData = async (config)=>{
 }
 //#else */
 import jQuery from 'jquery';
+
 (window).global = window;
 
 if (global === undefined) {
@@ -139,10 +140,10 @@ export const getData = async (config)=>{
     for(let list of config.lists){
         if ((list.name) == "ALL EVENTS"){continue;}
         else{
-            console.log(list.name);
             await $().SPServices({
                 
             operation: "GetListItems",
+            webURL: config.baseUrl,
             async: false,
             listName: list.name,
             CAMLViewFields: `<ViewFields>
@@ -176,7 +177,7 @@ export const getData = async (config)=>{
                 <RecurrencePatternXMLVersion>v3</RecurrencePatternXMLVersion> 
                 <ExpandRecurrence>TRUE</ExpandRecurrence> 
             </QueryOptions>`,
-            CAMLRowLimit: 10,
+            CAMLRowLimit: 5,
             completefunc: function (xData, Status) {
                 $(xData.responseXML).SPFilterNode("z:row").each(function() {
                     
@@ -193,7 +194,6 @@ export const getData = async (config)=>{
                         RecurrenceData: $node.attr("ows_RecurrenceData"), 
                         fAllDayEvent: $node.attr("ows_fAllDayEvent")
                     };
-                    console.log(row); 
                     items = [...items, row];
 
                 });
@@ -211,7 +211,6 @@ export const getData = async (config)=>{
     }) ;
 
     
-    console.log(items); 
     return items;
 };
 

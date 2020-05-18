@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rollup -c ",
-    "make": "rollup -c --environment",
+    "make": "rollup -c --environment pnpconfig:sipr",
     "dev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w \"",
     "makedev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w --environment spver:2013,pnpconfig:dev \"",
     "start": "sirv public",
