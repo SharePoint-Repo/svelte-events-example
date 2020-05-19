@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rollup -c ",
-    "make": "rollup -c --environment pnpconfig:sipr",
+    "make": "rollup -c --environment ",
     "dev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w \"",
-    "makedev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w --environment spver:2013,pnpconfig:dev \"",
+    "makedev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w --environment  \"",
     "start": "sirv public",
     "proxy": "node ./api-server.js"
   },

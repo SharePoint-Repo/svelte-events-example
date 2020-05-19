@@ -4,7 +4,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import injectProcessEnv from 'rollup-plugin-inject-process-env';
 import jscc from 'rollup-plugin-jscc';
 import sourcemap from 'rollup-plugin-sourcemaps'; 
 
@@ -19,7 +18,6 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
-		sourcemap(),
 		jscc({
 			values:{
 				_DEV: !production,
@@ -27,6 +25,7 @@ export default {
 				_SPVER: process.env.spver ? process.env.spver : 0
 			}
 		}),
+		sourcemap(),
 		svelte({
 			//customElement: true,
 			// enable run-time checks when not in production
@@ -76,9 +75,7 @@ export default {
 				]
 		  	}
 		),
-		injectProcessEnv({ 
-			NODE_ENV: production ? 'production' : 'development',
-		}),
+		
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
 		!production && serve(),
