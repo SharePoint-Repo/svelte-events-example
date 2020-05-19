@@ -156,17 +156,25 @@ export const getData = async (config)=>{
                 <FieldRef Name='fRecurrence' /> 
                 <FieldRef Name='RecurrenceData' /> 
                 <FieldRef Name='fAllDayEvent' /> 
+                <FieldRef Name='_ModerationStatus' />
+                
             </ViewFields>`,
             CAMLQuery: `<Query> 
                 <Where> 
-                    <DateRangesOverlap> 
-                        <FieldRef Name='EventDate' /> 
-                        <FieldRef Name='EndDate' /> 
-                        <FieldRef Name='RecurrenceID' /> 
-                        <Value Type='DateTime'> 
-                            <Week /> 
-                        </Value> 
-                    </DateRangesOverlap> 
+                     <And>
+                        <DateRangesOverlap> 
+                            <FieldRef Name='EventDate' /> 
+                            <FieldRef Name='EndDate' /> 
+                            <FieldRef Name='RecurrenceID' /> 
+                            <Value Type='DateTime'> 
+                                <Week /> 
+                            </Value> 
+                        </DateRangesOverlap> 
+                        <Eq>
+                            <FieldRef Name='_ModerationStatus' />
+                            <Value Type='ModStat'>Approved</Value>
+                        </Eq>
+                    </And>
                 </Where> 
                 <OrderBy> 
                     <FieldRef Name='EventDate' /> 
@@ -195,7 +203,7 @@ export const getData = async (config)=>{
                         fAllDayEvent: $node.attr("ows_fAllDayEvent")
                     };
                     items = [...items, row];
-
+                    
                 });
                 
             }
@@ -210,7 +218,7 @@ export const getData = async (config)=>{
         return 1;
     }) ;
 
-    
+    console.log(items);   
     return items;
 };
 
