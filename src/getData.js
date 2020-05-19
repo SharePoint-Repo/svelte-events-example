@@ -2,7 +2,7 @@ import {isBefore, parseISO} from 'date-fns';
 
 
 
-/*#if _SPVER == 2013 || _SPVER == 2016 || _SPVER == 2019
+/*#if _SPVER == 2010
 import {sp} from "@pnp/sp";
 export let getData = async (config)=>{
    
