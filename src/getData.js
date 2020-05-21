@@ -167,7 +167,7 @@ export const getData = async (config)=>{
                             <FieldRef Name='EndDate' /> 
                             <FieldRef Name='RecurrenceID' /> 
                             <Value Type='DateTime'> 
-                                <Week /> 
+                                <Now /> 
                             </Value> 
                         </DateRangesOverlap> 
                         <Eq>
