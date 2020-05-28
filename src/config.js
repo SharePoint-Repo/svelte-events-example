@@ -13,11 +13,14 @@ export let config = {
         name: 'calendar2',
         tabStatus: ' inactiveTab'
       }, 
+      { name: 'calendar3',
+        tabStatus: ' inactiveTab'
+      },
       {
-        name: 'calendar3',
+        name: 'BLDG 3350 RM 102',
         tabStatus: ' inactiveTab'
       },
   ], 
-  replaceText: ''
+  replaceText: /BLDG\s\d+\s/
 
 };

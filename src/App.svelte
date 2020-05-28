@@ -8,11 +8,11 @@
 	const send = $service.send;
 	//const lists = $service.context.lists;
 	const listNames = $service.context.listNames;
-	const replaceText = $service.context.config.replaceText; 
+	const replaceText = new RegExp($service.context.config.replaceText); 
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
 	$: state = $service.machine.current; 
-	
+
   (window).global = window;
 
 	if (global === undefined) {
@@ -26,7 +26,7 @@
 <main>
 	<div class='tab'>
 		{#each (listNames) as listName}
-			<button class='tabButton {tabStatus[listName]}' on:click|preventDefault={(event)=>send({type:'click', data: listName})}>{listName.replace('BLDG 3317 ', '')}</button>
+			<button class='tabButton {tabStatus[listName]}' on:click|preventDefault={(event)=>send({type:'click', data: listName})}>{listName.replace(replaceText, '')}</button>
 		{/each}
 	</div>
 	{#each (listNames) as listName}
@@ -113,7 +113,8 @@
 
 
 	.tab .tabButton.activeTab  {
-	background-color: #ddd;
+	background-color: black;
+	color: white;
 	}
 
 	.tabContent {
