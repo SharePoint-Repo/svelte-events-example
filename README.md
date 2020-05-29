@@ -9,8 +9,8 @@ Table of Contents
   - [Building and running in production mode](#building-and-running-in-production-mode)
   - [License](#license)
 
-** SharePoint Calendar events with svelte, robot3, and SPServices for legacy recurrence data; pnp.js is used on more modern SharePoint instances
-*
+SharePoint Calendar events with svelte, robot3, and SPServices for legacy recurrence data; pnp.js is used on more modern SharePoint instances
+
 - jscc allows for builds that target different environments 
 
 ## Installation
