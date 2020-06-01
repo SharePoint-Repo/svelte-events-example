@@ -114,7 +114,7 @@ rollup-plugin-jscc provides conditional compilation and compile-time variable re
         baseUrl: "http://localhost:8080",
         ````
         This is because localhost:8080 is default host and port of the sp-rest-proxy. When developing interactively, your rest requests should be sent to the sp-rest-proxy which then proxies the request to the configured SharePoint host and port for processing. See sp-rest-proxy config for details
-    3. 
+    3. Update this tomorrow
 
 
 ### pnp vs spservices
