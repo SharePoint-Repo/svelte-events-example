@@ -5,7 +5,7 @@
     "build": "rollup -c ",
     "make": "rollup -c --environment ",
     "dev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w \"",
-    "makedev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w --environment  \"",
+    "makedev": "concurrently --kill-others \"npm run proxy\" \"rollup -c -w --environment spver:2019\"",
     "start": "sirv public",
     "proxy": "node ./api-server.js"
   },

@@ -1,6 +1,6 @@
 import {isBefore, parseISO} from 'date-fns'; 
 
-/*if  _SPVER == 'o365' || _SPVER == '2019'
+/*#if  _SPVER == 'o365' || _SPVER == '2019'
 
 export const getData = async (config)=>{
     sp.setup({
