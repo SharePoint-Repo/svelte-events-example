@@ -1,7 +1,7 @@
 import {isBefore, parseISO} from 'date-fns'; 
 
 /*#if  _SPVER == 'o365' || _SPVER == '2019'
-
+import {sp} from "@pnp/sp";
 export const getData = async (config)=>{
     sp.setup({
         sp: {
@@ -46,9 +46,7 @@ export const getData = async (config)=>{
         if (list.name == 'ALL EVENTS'){continue;}
         await sp.web.lists.getByTitle(list.name)
         .renderListDataAsStream({
-
             OverrideViewXml: overrideViewXml,
-            
             Paging:'Paged=TRUE&RowLimit=5'
         })
         .then(response => {
@@ -62,6 +60,7 @@ export const getData = async (config)=>{
             });
             
             items = [...items,...temp];
+            console.log(items);
         })
     }
     items.sort((a,b) => {
