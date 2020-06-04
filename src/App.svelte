@@ -18,7 +18,11 @@
 	if (global === undefined) {
 		var global = window;
 	} 		
+	function displayNone(node, id){
 		
+		let el = document.getElementById(id); 
+		el.style.display = 'None'
+	}
 
 	onMount(()=>{send('mount');});
 </script>
@@ -42,13 +46,11 @@
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
 						
 							{#if isSameDay(EventDate, today) && list == listName}
-								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_today_none{display:none}</style>`}
-								<li><a target="_blank" href="{linkUrl}">
+								<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
 								</a></li>
 							{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
-								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_today_none{display:none}</style>`}
-								<li><a target="_blank" href="{linkUrl}">
+							<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
 								</a></li>
 							{/if}
@@ -61,13 +63,12 @@
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
 						
 							{#if (isAfter(EventDate, today)) && list == listName }
-								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_upcoming_none{display:none}</style>`}	
-								<li><a target="_blank" href="{linkUrl}">
+								<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}>
+								<a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
 								</a></li>
 							{:else if (isAfter(EventDate, today)) && listName == 'ALL EVENTS'}
-								{@html `<style type='text/css'>#${listName.replace(/\s/g, '')}_upcoming_none{display:none}</style>`}	
-								<li><a target="_blank" href="{linkUrl}">
+								<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
 								</a></li>
 
@@ -113,7 +114,7 @@
 
 
 	.tab .tabButton.activeTab  {
-	background-color: black;
+	background: linear-gradient(to bottom, #7892c2, #476e9e);
 	color: white;
 	}
 
