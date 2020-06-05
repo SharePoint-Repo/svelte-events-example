@@ -15,7 +15,7 @@ Table of Contents
   - [Design](#design)
     - [jscc](#jscc)
       - [jscc example](#jscc-example)
-    - [pnp vs spservices](#pnp-vs-spservices)
+    - [pnp vs [spservices](https://sympmarc.github.io/SPServices/)](#pnp-vs-spservices)
       - [getData.js](#getdatajs)
     - [robot3](#robot3)
       - [eventMachine.js](#eventmachinejs)
@@ -113,11 +113,11 @@ rollup-plugin-jscc provides conditional compilation and compile-time variable re
         ```javascript
         baseUrl: "http://localhost:8080",
         ````
-        This is because localhost:8080 is default host and port of the sp-rest-proxy. When developing interactively, your rest requests should be sent to the sp-rest-proxy which then proxies the request to the configured SharePoint host and port for processing. See sp-rest-proxy config for details
+        This is because localhost:8080 is default host and port of the sp-rest-proxy. When developing interactively, your rest requests should be sent to the [sp-rest-proxy](https://github.com/koltyakov/sp-rest-proxy) which then proxies the request to the configured SharePoint host and port for processing. See [sp-rest-proxy](https://github.com/koltyakov/sp-rest-proxy) config for details
     3. Update this tomorrow
 
 
-### pnp vs spservices
+### [pnp](https://github.com/pnp/pnpjs) vs [spservices](https://sympmarc.github.io/SPServices/)
 
 #### getData.js
 
