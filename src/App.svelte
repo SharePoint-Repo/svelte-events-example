@@ -88,14 +88,14 @@
 		text-align: left;
 		min-width: 430px;
 		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-		background: linear-gradient(to bottom, transparent, silver 50%)
+		background: linear-gradient(to left, transparent, silver 80%)
 	}
 	.tab {
 		overflow: hidden;
 		
 	}
 	.tab button {
-		background-color: inherit;
+		background-color: silver;
 		float: left;
 		border: none;
 		outline: none;
@@ -104,7 +104,7 @@
 		transition: 0.3s;
 		margin: 0px;
 		text-transform: uppercase;
-		font-size: 15px;
+		font-size: 14px;
 		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
 		font-weight: bold;
 	}
