@@ -36,7 +36,7 @@
 	{#each (listNames) as listName}
 	
 		<div class='tabContent {tabStatus[listName]}' id={listName}>
-			<h3>{listName}</h3>
+			<h3 class='listNameHeader'>{listName}</h3>
 			{#await data}
 				<p>...retreiving data</p>
 			{:then data}
@@ -87,7 +87,8 @@
 	main {
 		text-align: left;
 		min-width: 430px;
-		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+		background: linear-gradient(to bottom, transparent, silver 50%)
 	}
 	.tab {
 		overflow: hidden;
@@ -109,7 +110,8 @@
 	}
 
 	.tab button:hover {
-	background-color: #ddd;
+	background-color: black;
+	color: white
 	}
 
 
@@ -129,6 +131,9 @@
 	}
 	.tabContent.activeTab{
 		display: block;
+	}
+	.listNameHeader{
+		color: #476e9e;
 	}
 	@keyframes fadeEffect {
 	from {opacity: 0;}
@@ -161,7 +166,7 @@
 
 	}
 	a:hover .event{
-		color: darkblue;
+		color: blue;
 
 	}
 	
