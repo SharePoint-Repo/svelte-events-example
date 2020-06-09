@@ -36,7 +36,7 @@
 	{#each (listNames) as listName}
 	
 		<div class='tabContent {tabStatus[listName]}' id={listName}>
-
+			<h3>{listName}</h3>
 			{#await data}
 				<p>...retreiving data</p>
 			{:then data}
