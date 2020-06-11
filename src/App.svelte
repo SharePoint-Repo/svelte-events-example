@@ -44,7 +44,6 @@
 				<ul>Today's Events
 					<li><div id={listName.replace(/\s/g, '') + "_today_none"}>None</div></li>					
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
-						
 							{#if isSameDay(EventDate, today) && list == listName}
 								<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
@@ -55,13 +54,11 @@
 								</a></li>
 							{/if}
 						{/each}
-					
 				</ul>
 				
 				<ul>Upcoming Events
 					<li><div id={listName.replace(/\s/g, '') + "_upcoming_none"}>None</div></li>		
 						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
-						
 							{#if (isAfter(EventDate, today)) && list == listName }
 								<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}>
 								<a target="_blank" href="{linkUrl}">
@@ -71,10 +68,8 @@
 								<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}><a target="_blank" href="{linkUrl}">
 									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
 								</a></li>
-
 							{/if}
 						{/each}
-					
 				</ul>
 			{:catch error }
 				<p style="color: red">{error.message}</p>
@@ -104,7 +99,7 @@
 		transition: 0.3s;
 		margin: 0px;
 		text-transform: uppercase;
-		font-size: 14px;
+		font-size: 15px;
 		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
 		font-weight: bold;
 	}
