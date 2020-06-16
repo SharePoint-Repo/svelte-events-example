@@ -12,7 +12,7 @@
 	$: data = $service.context.data;
 	$: tabStatus = $service.context.tabStatus;
 	$: state = $service.machine.current; 
-
+	$: baseUrl = $service.context.config.baseUrl;
   (window).global = window;
 
 	if (global === undefined) {
@@ -36,44 +36,49 @@
 	{#each (listNames) as listName}
 	
 		<div class='tabContent {tabStatus[listName]}' id={listName}>
-			<h3 class='listNameHeader'>{listName}</h3>
-			{#await data}
-				<p>...retreiving data</p>
-			{:then data}
-			
-				<ul>Today's Events
-					<li><div id={listName.replace(/\s/g, '') + "_today_none"}>None</div></li>					
-						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
-							{#if isSameDay(EventDate, today) && list == listName}
-								<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
-								</a></li>
-							{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
+		{#if (listName == 'ALL EVENTS')}
+			<h3 class='listNameHeader'><a target="_blank" href={`${baseUrl}`}>{listName}</a></h3>
+		{:else}
+			<h3 class='listNameHeader'><a target="_blank" href={`${baseUrl}/Lists/${listName}`}>{listName}</a></h3>
+		{/if}
+
+		{#await data}
+			<p>...retreiving data</p>
+		{:then data}
+		
+			<ul>Today's Events
+				<li><div id={listName.replace(/\s/g, '') + "_today_none"}>None</div></li>					
+					{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
+						{#if isSameDay(EventDate, today) && list == listName}
 							<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
-								</a></li>
-							{/if}
-						{/each}
-				</ul>
-				
-				<ul>Upcoming Events
-					<li><div id={listName.replace(/\s/g, '') + "_upcoming_none"}>None</div></li>		
-						{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
-							{#if (isAfter(EventDate, today)) && list == listName }
-								<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}>
-								<a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
-								</a></li>
-							{:else if (isAfter(EventDate, today)) && listName == 'ALL EVENTS'}
-								<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}><a target="_blank" href="{linkUrl}">
-									<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
-								</a></li>
-							{/if}
-						{/each}
-				</ul>
-			{:catch error }
-				<p style="color: red">{error.message}</p>
-			{/await}
+								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
+							</a></li>
+						{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
+						<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
+								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
+							</a></li>
+						{/if}
+					{/each}
+			</ul>
+			
+			<ul>Upcoming Events
+				<li><div id={listName.replace(/\s/g, '') + "_upcoming_none"}>None</div></li>		
+					{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
+						{#if (isAfter(EventDate, today)) && list == listName }
+							<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}>
+							<a target="_blank" href="{linkUrl}">
+								<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
+							</a></li>
+						{:else if (isAfter(EventDate, today)) && listName == 'ALL EVENTS'}
+							<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}><a target="_blank" href="{linkUrl}">
+								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
+							</a></li>
+						{/if}
+					{/each}
+			</ul>
+		{:catch error }
+			<p style="color: red">{error.message}</p>
+		{/await}
 		</div>
 	{/each}
 </main>
