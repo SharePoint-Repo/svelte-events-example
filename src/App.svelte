@@ -37,9 +37,9 @@
 	
 		<div class='tabContent {tabStatus[listName]}' id={listName}>
 		{#if (listName == 'ALL EVENTS')}
-			<h3 class='listNameHeader'><a target="_blank" href={`${baseUrl}`}>{listName}</a></h3>
+			<h3 class='listNameHeader'><a target="_blank" href={`${baseUrl}`} title={listName}>{listName}</a></h3>
 		{:else}
-			<h3 class='listNameHeader'><a target="_blank" href={`${baseUrl}/Lists/${listName}`}>{listName}</a></h3>
+			<h3 class='listNameHeader'><a target="_blank" href={`${baseUrl}/Lists/${listName}`}  title={listName}>{listName}</a></h3>
 		{/if}
 
 		{#await data}
@@ -50,11 +50,11 @@
 				<li><div id={listName.replace(/\s/g, '') + "_today_none"}>None</div></li>					
 					{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration}, i}
 						{#if isSameDay(EventDate, today) && list == listName}
-							<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
+							<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}"  title={Title}>
 								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {Title}</span></div>					
 							</a></li>
 						{:else if isSameDay(EventDate, today) && listName == 'ALL EVENTS'}
-						<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}">
+						<li use:displayNone={`${listName.replace(/\s/g, '')}_today_none`}><a target="_blank" href="{linkUrl}" title={Title}>
 								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
 							</a></li>
 						{/if}
@@ -66,11 +66,11 @@
 					{#each data as {ID, Title, EventDate, EndDate, list, linkUrl, Duration }}
 						{#if (isAfter(EventDate, today)) && list == listName }
 							<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}>
-							<a target="_blank" href="{linkUrl}">
+							<a target="_blank" href="{linkUrl}" title={Title}>
 								<div class="event"><span class="time">{format(EventDate,"ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate,"HHmm)")} </span> <span class="title">- {Title}</span></div>					
 							</a></li>
 						{:else if (isAfter(EventDate, today)) && listName == 'ALL EVENTS'}
-							<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}><a target="_blank" href="{linkUrl}">
+							<li use:displayNone={`${listName.replace(/\s/g, '')}_upcoming_none`}><a target="_blank" href="{linkUrl}" title={Title}>  
 								<div class="event"><span class="time">{format(EventDate, "ddMMM (HHmm-")}</span><span class="endTime">{format(EndDate, "HHmm)")} </span> <span class="title">- {`${list.replace(replaceText, '')} - ${Title}`}</span></div>					
 							</a></li>
 						{/if}
@@ -132,8 +132,14 @@
 	.tabContent.activeTab{
 		display: block;
 	}
-	.listNameHeader{
+	.listNameHeader a{
 		color: #476e9e;
+		font-size: 15px;
+		font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+		font-weight: bold;
+	}
+	.listNameHeader a:hover{
+		color: white;
 	}
 	@keyframes fadeEffect {
 	from {opacity: 0;}
